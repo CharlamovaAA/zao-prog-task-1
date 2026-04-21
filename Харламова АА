@@ -1,0 +1,88 @@
+def two_sum(nums, target):
+    # Перебираем все элементы по одному
+    for i in range(len(nums)):
+        # Второй цикл начинается со следующего элемента
+        # чтобы не использовать один элемент дважды
+        for j in range(i + 1, len(nums)):
+            # Проверяем сумму
+            if nums[i] + nums[j] == target:
+                return [i, j]  # Нашли! Возвращаем индексы
+
+# Тесты
+print(two_sum([2, 7, 11, 15], 9))  # [0, 1]
+print(two_sum([3, 2, 4], 6))       # [1, 2]
+print(two_sum([3, 3], 6))          # [0, 1]
+
+def two_sum(nums, target):
+    """
+    Находит индексы двух чисел, сумма которых равна target.
+    
+    Args:
+        nums: список целых чисел
+        target: целевая сумма
+    
+    Returns:
+        list: список из двух индексов [i, j]
+    """
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+    return []  # на случай, если решение не найдено
+
+import unittest
+from two_sum import two_sum  # импортируем нашу функцию
+
+
+class TestTwoSum(unittest.TestCase):
+    """
+    Класс для тестирования функции two_sum
+    """
+    
+    def test_example_1(self):
+        """Тест из первого примера: nums = [2,7,11,15], target = 9"""
+        result = two_sum([2, 7, 11, 15], 9)
+        self.assertEqual(result, [0, 1])
+    
+    def test_example_2(self):
+        """Тест из второго примера: nums = [3,2,4], target = 6"""
+        result = two_sum([3, 2, 4], 6)
+        self.assertEqual(result, [1, 2])
+    
+    def test_example_3(self):
+        """Тест из третьего примера: nums = [3,3], target = 6"""
+        result = two_sum([3, 3], 6)
+        self.assertEqual(result, [0, 1])
+    
+    def test_negative_numbers(self):
+        """Тест с отрицательными числами: nums = [-1, -2, -3, -4, -5], target = -8"""
+        result = two_sum([-1, -2, -3, -4, -5], -8)
+        self.assertEqual(result, [2, 4])  # -3 + (-5) = -8
+    
+    def test_with_zero(self):
+        """Тест с нулём: nums = [0, 4, 3, 0], target = 0"""
+        result = two_sum([0, 4, 3, 0], 0)
+        self.assertEqual(result, [0, 3])  # 0 + 0 = 0
+    
+    def test_large_numbers(self):
+        """Тест с большими числами"""
+        result = two_sum([100, 200, 300, 400, 500], 700)
+        self.assertEqual(result, [1, 3])  # 200 + 400 = 600? Нет, 300+400=700 → [2,3]
+        # Исправим: 300 + 400 = 700, индексы 2 и 3
+        self.assertEqual(two_sum([100, 200, 300, 400, 500], 700), [2, 3])
+    
+    def test_order_doesnt_matter(self):
+        """Тест: порядок индексов не важен, можно проверять разными способами"""
+        result = two_sum([1, 2, 3, 4, 5], 9)
+        # 4 + 5 = 9, индексы 3 и 4
+        self.assertIn(result, [[3, 4], [4, 3]])  # любой порядок подойдёт
+    
+    def test_same_value_different_indices(self):
+        """Тест: одинаковые значения, но разные индексы"""
+        result = two_sum([5, 5, 5, 5], 10)
+        self.assertEqual(result, [0, 1])  # первые два индекса
+
+
+# Этот блок позволяет запускать тесты напрямую из файла
+if __name__ == '__main__':
+    unittest.main()
